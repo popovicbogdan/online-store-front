@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from "react";
+import Dashboard from "./Layout/Dashboard";
+import store from "./store/store";
+import { connect } from "react-redux";
+import { loadUser } from "./store/actions/auth";
+interface Props {
+  loadUser: typeof loadUser;
 }
 
-export default App;
+class App extends React.PureComponent<Props> {
+  // check if we are authenticated whenever app renders
+  componentDidMount() {
+    store.dispatch(loadUser());
+  }
+  render() {
+    return (
+      <div className="App">
+        <Dashboard />
+      </div>
+    );
+  }
+}
+export default connect(
+  null,
+  { loadUser }
+)(App);
